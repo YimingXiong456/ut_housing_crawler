@@ -1,101 +1,101 @@
 # UT Housing Room Monitor
 
-UT Austin 学生宿舍房源监控脚本，自动检测房源并发出警报。
+A Python script to automatically monitor UT Austin student housing portal for available rooms and alert users when rooms become available.
 
-## 功能特性
+## Features
 
-- 🔄 **自动登录** - 自动登录 UT Austin StarRez 住房门户
-- 🔍 **房源检测** - 定期检查是否有可用宿舍房源
-- 🚨 **声音警报** - 发现房源时发出响亮的蜂鸣警报
-- 📸 **自动截图** - 发现房源时自动保存截图
+- 🔄 **Auto Login** - Automatically logs into UT Austin StarRez housing portal
+- 🔍 **Room Detection** - Periodically checks for available dorm rooms
+- 🚨 **Sound Alert** - Plays loud beep alarm when rooms are found
+- 📸 **Auto Screenshot** - Automatically saves screenshots when rooms are detected
 
-## 技术栈
+## Tech Stack
 
 - Python 3.x
-- Playwright (浏览器自动化)
-- Microsoft Edge (浏览器)
+- Playwright (browser automation)
+- Microsoft Edge (browser)
 
-## 安装步骤
+## Installation
 
-### 1. 安装 Python 依赖
+### 1. Install Python Dependencies
 
 ```bash
 pip install playwright
 ```
 
-### 2. 安装浏览器驱动
+### 2. Install Browser Driver
 
 ```bash
 playwright install msedge
 ```
 
-## 使用方法
+## Usage
 
-### 运行脚本
+### Run the Script
 
 ```bash
 python ut_housing_edge.py
 ```
 
-### 脚本流程
+### Script Workflow
 
-1. 打开 Edge 浏览器访问 UT Austin 住房门户
-2. 如果未登录，自动使用预设凭证登录
-3. 进入房源选择页面
-4. 第一次尝试：筛选 2 Bedroom (45%)
-5. 后续轮次：使用 2 Bedroom (55%) 刷新过滤器
-6. 检测是否有可用房源
-7. 发现房源时：
-   - 保存截图
-   - 启动蜂鸣警报
-   - 等待用户按回车键停止
+1. Opens Edge browser and navigates to UT Austin housing portal
+2. Automatically logs in if not already authenticated
+3. Navigates to room selection page
+4. First attempt: selects "2 Bedroom (45%)" filter
+5. Subsequent attempts: uses "2 Bedroom (55%)" to refresh filter
+6. Checks for available rooms
+7. When rooms are found:
+   - Saves screenshot
+   - Starts beep alarm
+   - Waits for user to press Enter to stop
 
-## 适用场景
+## Use Case
 
-此脚本专为 **收到录取通知但暂未分配到心仪现房** 的学生设计，用于持续监控宿舍房源释放情况，第一时间捕捉心仪房型。
+This script is designed for students **who have received an offer but haven't been assigned their preferred room**. It continuously monitors for room availability and notifies users immediately when their desired room type becomes available.
 
-## 配置说明
+## Configuration
 
-脚本中的关键配置：
+Key configurations in the script:
 
-- **登录凭证**: 在代码中预设了用户名和密码（第 103-104 行）
-- **监控间隔**: 默认 180 秒（3分钟），带随机偏移
-- **浏览器模式**: 非无头模式，可看到操作过程
+- **Login Credentials**: Username and password are hardcoded (lines 103-104)
+- **Monitor Interval**: Default 180 seconds (3 minutes) with random offset
+- **Browser Mode**: Non-headless mode for visibility
 
-### Label 定制说明
+### Label Customization
 
-`attempt_select_room` 函数中的 label 选择器需要根据个人需求定制：
+The label selectors in the `attempt_select_room` function need to be customized based on personal preferences:
 
 ```python
-# 第一次尝试（第 56 行）
+# First attempt (line 56)
 page.locator('label:has-text("2 Bedroom (45%)")').click()
 
-# 后续轮次（第 61 行）
+# Subsequent attempts (line 61)
 page.locator('label:has-text("2 Bedroom (55%)")').click()
 ```
 
-**定制方法**：
-1. 手动访问住房门户，进入房源选择页面
-2. 查看可用房型选项的文本内容
-3. 将代码中的 `"2 Bedroom (45%)"` 和 `"2 Bedroom (55%)"` 替换为您目标房型的文本
+**Customization Steps**:
+1. Manually visit the housing portal and navigate to room selection page
+2. Check the text content of available room type options
+3. Replace `"2 Bedroom (45%)"` and `"2 Bedroom (55%)"` with your target room type text
 
-**注意**：脚本设计为第一次尝试勾选目标房型，后续轮次使用另一个房型选项刷新过滤器（不影响已勾选的目标房型）。
+**Note**: The script is designed to select the target room type on the first attempt, then use another room type option to refresh the filter in subsequent attempts (without affecting the already selected target room type).
 
-## 注意事项
+## Notes
 
-⚠️ **重要提醒**：
+⚠️ **Important Reminders**:
 
-1. 请确保您有权限访问 UT Austin 住房系统
-2. 使用此脚本需遵守学校的使用条款
-3. 建议在非高峰时段使用，避免对服务器造成压力
-4. 定期更新密码，确保账户安全
-5. 脚本中的用户名和密码需要替换为您自己的凭证
+1. Ensure you have permission to access UT Austin housing system
+2. Use this script in compliance with university terms of service
+3. Avoid running during peak hours to prevent server stress
+4. Update password regularly for account security
+5. Replace the hardcoded username and password with your own credentials
 
-## 文件说明
+## Files
 
-- `ut_housing_edge.py` - 主脚本文件
-- `room_available_*.png` - 发现房源时的截图
-- `error_*.png` - 出错时的截图
+- `ut_housing_edge.py` - Main script file
+- `room_available_*.png` - Screenshots when rooms are available
+- `error_*.png` - Screenshots when errors occur
 
 ## License
 
